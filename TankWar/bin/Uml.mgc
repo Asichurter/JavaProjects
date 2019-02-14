@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ClassDiagram>
+    <Class name="tank_bullet.Dir" x="1692" y="1437">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"
+            accessors-accepted="true" constructors-accepted="false"/>
+    </Class>
+    <Class name="map.Water" x="2542" y="1302">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"
+            accessors-accepted="true" constructors-accepted="false"/>
+        <Extension destinationClassName="map.MapType"/>
+        <Communication destinationClassName="map.MapType"/>
+        <Communication destinationClassName="tank_bullet.AbstractTank"/>
+    </Class>
+    <Class name="reinforceANDsupply.BulletShieldKit" x="486" y="588">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"
+            accessors-accepted="true" constructors-accepted="false"/>
+        <Extension destinationClassName="reinforceANDsupply.Supply"/>
+    </Class>
+    <Class name="buff.LoadTimeDecresing" x="44" y="1562">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"
+            accessors-accepted="true" constructors-accepted="false"/>
+        <Extension destinationClassName="buff.Buff"/>
+        <Communication destinationClassName="tank_bullet.AbstractTank"/>
+    </Class>
+    <Class name="tank_bullet.AOE_Explosion" x="14" y="334">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"
+            accessors-accepted="true" constructors-accepted="false"/>
+        <Extension destinationClassName="tank_bullet.Explosion"/>
+    </Class>
+    <Class name="map.BlockWall" x="2775" y="635">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"
+            accessors-accepted="true" constructors-accepted="false"/>
+        <Extension destinationClassName="map.MapType"/>
+        <Communication destinationClassName="map.MapType"/>
+        <Communication destinationClassName="tank_bullet.Bullet"/>
+    </Class>
+    <Class name="tank_bullet.Tank" x="1461" y="341">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"
+            accessors-accepted="true" constructors-accepted="false"/>
+        <Extension destinationClassName="tank_bullet.AbstractTank"/>
+        <Association destinationClassName="tank_bullet.Bullet"
+            endpointName="bullets" kind="Simple"/>
+        <Communication destinationClassName="map.MapType"/>
+        <Communication destinationClassName="tank_bullet.AbstractTank"/>
+        <Communication destinationClassName="tank_bullet.Bullet"/>
+        <Communication destinationClassName="gameFrame.Score"/>
+    </Class>
+    <Class name="reinforceANDsupply.FireLoadkit" x="532" y="704">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"
+            accessors-accepted="true" constructors-accepted="false"/>
+        <Extension destinationClassName="reinforceANDsupply.Supply"/>
+    </Class>
+    <Class name="reinforceANDsupply.AOE_BulletKit" x="492" y="522">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"
+            accessors-accepted="true" constructors-accepted="false"/>
+        <Extension destinationClassName="reinforceANDsupply.Supply"/>
+    </Class>
+    <Class name="buff.BulletShield" x="54" y="1164">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"
+            accessors-accepted="true" constructors-accepted="false"/>
+        <Extension destinationClassName="buff.Buff"/>
+        <Communication destinationClassName="tank_bullet.AbstractTank"/>
+    </Class>
+    <Class name="gameFrame.Score" x="418" y="-2">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"
+            accessors-accepted="true" constructors-accepted="false"/>
+    </Class>
+    <Class name="map.Grass" x="2286" y="924">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"
+            accessors-accepted="true" constructors-accepted="false"/>
+        <Extension destinationClassName="map.MapType"/>
+        <Communication destinationClassName="tank_bullet.AbstractTank"/>
+    </Class>
+    <Class name="map.Plain" x="2280" y="328">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"
+            accessors-accepted="true" constructors-accepted="false"/>
+        <Extension destinationClassName="map.MapType"/>
+        <Association destinationClassName="map.NullMap"
+            endpointName="map" kind="Simple"/>
+        <Communication destinationClassName="tank_bullet.AbstractTank"/>
+        <Communication destinationClassName="map.NullMap"/>
+    </Class>
+    <Class name="map.Hill" x="2274" y="1186">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"
+            accessors-accepted="true" constructors-accepted="false"/>
+        <Extension destinationClassName="map.MapType"/>
+        <Communication destinationClassName="tank_bullet.AbstractTank"/>
+    </Class>
+    <Class name="gameFrame.TankFrame.Component" x="9" y="7">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"
+            accessors-accepted="true" constructors-accepted="false"/>
+        <Communication destinationClassName="gameFrame.TankFrame"/>
+        <Communication destinationClassName="tank_bullet.AbstractTank"/>
+        <Communication destinationClassName="tank_bullet.AOE_Explosion"/>
+        <Communication destinationClassName="tank_bullet.Bullet"/>
+        <Communication destinationClassName="tank_bullet.Explosion"/>
+    </Class>
+    <Class name="reinforceANDsupply.RepairToolkit" x="666" y="704">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"
+            accessors-accepted="true" constructors-accepted="false"/>
+        <Extension destinationClassName="reinforceANDsupply.Supply"/>
+    </Class>
+    <Class name="tank_bullet.Bullet" x="1592" y="912">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"
+            accessors-accepted="true" constructors-accepted="false"/>
+        <Association destinationClassName="tank_bullet.Dir"
+            endpointName="direction" kind="Simple">
+            <Point x="1676" y="1352"/>
+        </Association>
+    </Class>
+    <Class name="map.Desert" x="2288" y="629">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"
+            accessors-accepted="true" constructors-accepted="false"/>
+        <Extension destinationClassName="map.MapType"/>
+        <Communication destinationClassName="tank_bullet.AbstractTank"/>
+    </Class>
+    <Class name="buff.Buff" x="54" y="1370">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"
+            accessors-accepted="true" constructors-accepted="false"/>
+    </Class>
+    <Class name="buff.Recovering" x="362" y="1346">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"
+            accessors-accepted="true" constructors-accepted="false"/>
+        <Extension destinationClassName="buff.Buff"/>
+        <Communication destinationClassName="tank_bullet.AbstractTank"/>
+    </Class>
+    <Class name="tank_bullet.AbstractTank" x="1968" y="90">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"
+            accessors-accepted="true" constructors-accepted="false"/>
+        <Association destinationClassName="map.MapType"
+            endpointName="LAST_TYPE" kind="Simple">
+            <Point x="2188" y="48"/>
+            <Point x="2620" y="40"/>
+        </Association>
+        <Association destinationClassName="tank_bullet.Dir"
+            endpointName="direction" kind="Simple"/>
+        <Communication destinationClassName="buff.Buff"/>
+        <Communication destinationClassName="map.MapType"/>
+    </Class>
+    <Class name="tank_bullet.EnemyTank" x="1498" y="4">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"
+            accessors-accepted="true" constructors-accepted="false"/>
+        <Extension destinationClassName="tank_bullet.AbstractTank">
+            <Point x="1812" y="54"/>
+            <Point x="2108" y="44"/>
+        </Extension>
+        <Communication destinationClassName="tank_bullet.Dir"/>
+        <Communication destinationClassName="gameFrame.TankFrame"/>
+        <Communication destinationClassName="tank_bullet.AbstractTank"/>
+        <Communication destinationClassName="tank_bullet.Bullet"/>
+        <Communication destinationClassName="skill.AOE_Bullet"/>
+        <Communication destinationClassName="gameFrame.Score"/>
+    </Class>
+    <Class name="map.NullMap" x="2289" y="89">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"
+            accessors-accepted="true" constructors-accepted="false"/>
+        <Extension destinationClassName="map.MapType"/>
+    </Class>
+    <Class name="gameFrame.GameRun" x="12" y="274">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+    </Class>
+    <Class name="skill.AOE_Bullet" x="1244" y="1340">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"
+            accessors-accepted="true" constructors-accepted="false"/>
+        <Extension destinationClassName="tank_bullet.Bullet"/>
+        <Communication destinationClassName="tank_bullet.Bullet"/>
+    </Class>
+    <Class name="tank_bullet.Explosion" x="10" y="496">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"
+            accessors-accepted="true" constructors-accepted="false"/>
+    </Class>
+    <Class name="gameFrame.TankFrame" x="943" y="61">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"
+            accessors-accepted="true" constructors-accepted="false"/>
+        <Association destinationClassName="tank_bullet.EnemyTank"
+            endpointName="enemyIter" kind="Simple">
+            <Point x="1163" y="27"/>
+            <Point x="1506" y="31"/>
+        </Association>
+        <Association destinationClassName="tank_bullet.Bullet"
+            endpointName="enemyBullets" kind="Simple">
+            <Point x="1468" y="970"/>
+        </Association>
+        <Association destinationClassName="tank_bullet.Bullet"
+            endpointName="myBulletIter" kind="Simple"/>
+        <Association destinationClassName="tank_bullet.EnemyTank"
+            endpointName="EnemyTanks" kind="Simple">
+            <Point x="1348" y="84"/>
+        </Association>
+        <Association destinationClassName="tank_bullet.Tank"
+            endpointName="mytank" kind="Simple"/>
+        <Association destinationClassName="gameFrame.Score"
+            endpointName="MyScore" kind="Simple">
+            <Point x="930" y="86"/>
+            <Point x="828" y="78"/>
+        </Association>
+        <Association destinationClassName="reinforceANDsupply.Supply"
+            endpointName="SUPPLIES" kind="Simple"/>
+        <Association destinationClassName="tank_bullet.Bullet"
+            endpointName="enemyBulletIter" kind="Simple">
+            <Point x="1498" y="1049"/>
+        </Association>
+        <Association destinationClassName="reinforceANDsupply.Supply"
+            endpointName="supplyIter" kind="Simple">
+            <Point x="921" y="421"/>
+            <Point x="903" y="421"/>
+        </Association>
+        <Association destinationClassName="map.MyMap"
+            endpointName="MY_MAP" kind="Simple"/>
+        <Communication destinationClassName="tank_bullet.Dir"/>
+        <Communication destinationClassName="map.MapType"/>
+        <Communication destinationClassName="gameFrame.TankFrame.Component"/>
+        <Communication destinationClassName="tank_bullet.AbstractTank"/>
+        <Communication destinationClassName="tank_bullet.AOE_Explosion"/>
+        <Communication destinationClassName="tank_bullet.EnemyTank"/>
+        <Communication destinationClassName="tank_bullet.Tank"/>
+        <Communication destinationClassName="tank_bullet.Bullet"/>
+        <Communication destinationClassName="skill.AOE_Bullet"/>
+        <Communication destinationClassName="reinforceANDsupply.Supply"/>
+        <Communication destinationClassName="gameFrame.Score"/>
+        <Communication destinationClassName="tank_bullet.Explosion"/>
+    </Class>
+    <Class name="reinforceANDsupply.SupplyBuilder" x="727" y="261">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"
+            accessors-accepted="true" constructors-accepted="false"/>
+    </Class>
+    <Class name="map.MapType" x="2622" y="2">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"
+            accessors-accepted="true" constructors-accepted="false"/>
+    </Class>
+    <Class name="map.Road" x="2638" y="958">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"
+            accessors-accepted="true" constructors-accepted="false"/>
+        <Extension destinationClassName="map.MapType"/>
+        <Communication destinationClassName="tank_bullet.AbstractTank"/>
+    </Class>
+    <Class name="reinforceANDsupply.Supply" x="644" y="368">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"
+            accessors-accepted="true" constructors-accepted="false"/>
+    </Class>
+    <Class name="map.MyMap" x="468" y="932">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="true"
+            accessors-accepted="true" constructors-accepted="false"/>
+        <Communication destinationClassName="map.MapType"/>
+    </Class>
+</ClassDiagram>

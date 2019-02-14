@@ -1,0 +1,957 @@
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.stream.Collectors;
+
+import javax.swing.JOptionPane;
+
+/**
+ * 用于容纳棋子的棋盘的类
+ *
+ */
+public class GoBoard {
+	
+	/**
+	 * 用于记录棋盘状态的写手
+	 */
+	private PrintWriter writer = new PrintWriter(new FileOutputStream("debug.txt"), true);
+	
+	/**
+	 * 用于表征当前的行棋点
+	 */
+	private int CurrentX = 0;
+	/**
+	 * 用于表征当前的行棋点
+	 */
+	private int CurrentY = 0;
+	
+	/**
+	 * 用于储存每个棋子的二维数组
+	 */
+	private Stone[][] stones = new Stone[9][9];
+	/**
+	 * 用于储存每种颜色棋子的群组的集合
+	 */
+	private LinkedList<StoneGroup> BlackGroup;
+	/**
+	 * 用于储存每种颜色棋子的群组的集合
+	 */
+	private LinkedList<StoneGroup> WhiteGroup;
+	
+	/**
+	 * 创建一个初始化的棋盘 
+	 * @throws FileNotFoundException debug文件输出异常
+	 */
+	public GoBoard() throws FileNotFoundException {
+		for (int i = 0; i <= 8; i++) {
+			stones[i] = new Stone[9];
+		}
+		BlackGroup = new LinkedList<>();
+		WhiteGroup = new LinkedList<>();
+	}
+	
+	/**
+	 * 用于返回棋盘上所有棋子的二维数组的引用
+	 * @return 棋盘二维数组
+	 */
+	public Stone[][] getStones(){
+		return this.stones;
+	}
+	
+	/**
+	 * 用于检查一个点所处的棋盘位置
+	 * 
+	 * <p>1        2        3</p>
+	 * <p>8        9        4</p>
+	 * <p>7        6        5</p>
+	 * 
+	 * @param point 所检查的点
+	 * @return 位置的标识符
+	 */
+	private int checkPosition(Point point) {
+		if (point.getX() == 0) {
+			if (point.getY() == 0) {
+				return 1;
+			}
+			else if (point.getY() == 8) {
+				return 7;
+			}
+			else {
+				return 8;
+			}
+		}
+		else if (point.getX() == 8) {
+			if (point.getY() == 0) {
+				return 3;
+			}
+			else if (point.getY() == 8) {
+				return 5;
+			}
+			else {
+				return 4;
+			}	
+		}
+		else {
+			if (point.getY() == 0) {
+				return 2;
+			}
+			else if (point.getY() == 8) {
+				return 6;
+			}
+			else {
+				return 9;
+			}
+		}
+	}
+	
+	/**
+	 * 用于检查一个位置处的棋子有多少气
+	 * @param point 待检查的位置
+	 * @return 气的数量
+	 * @throws GoException 检查气数目时发生的异常
+	 */
+	private int checkQiNum(Point point) throws GoException {
+		int num = 4;
+		try {
+		switch(checkPosition(point)) {
+		//位于左上角
+		case 1:
+			num = 2;
+			if (stones[0][1] != null)
+				num--;
+			if (stones[1][0] != null)
+				num--;
+			return num;
+			//位于上侧
+		case 2:
+			num = 3;
+			if (stones[point.getX()-1][0] != null)
+				num--;
+			if (stones[point.getX()+1][0] != null)
+				num--;
+			if (stones[point.getX()][1] != null)
+				num--;
+			return num;
+			//位于右上角
+		case 3:
+			num = 2;
+			if (stones[7][0] != null)
+				num--;
+			if (stones[8][1] != null)
+				num--;
+			return num;
+			//位于右侧
+		case 4:
+			num = 3;
+			if (stones[8][point.getY()-1] != null)
+				num--;
+			if (stones[8][point.getY()+1] != null)
+				num--;
+			if (stones[7][point.getY()] != null)
+				num--;
+			return num;
+			//位于右下角
+		case 5:
+			num = 2;
+			if (stones[8][7] != null)
+				num--;
+			if (stones[7][8] != null)
+				num--;
+			return num;
+			//位于下侧
+		case 6:
+			num = 3;
+			if (stones[point.getX()-1][8] != null)
+				num--;
+			if (stones[point.getX()+1][8] != null)
+				num--;
+			if (stones[point.getX()][7] != null)
+				num--;
+			return num;
+			//位于左下角
+		case 7:
+			num = 2;
+			if (stones[0][7] != null)
+				num--;
+			if (stones[1][8] != null)
+				num--;
+			return num;
+			//位于左侧
+		case 8:
+			num = 3;
+			if (stones[0][point.getY()-1] != null)
+				num--;
+			if (stones[0][point.getY()+1] != null)
+				num--;
+			if (stones[1][point.getY()] != null)
+				num--;
+			return num;
+			//位于中间
+		default:
+			num = 4;
+			if (stones[point.getX()][point.getY()-1] != null)
+				num--;
+			if (stones[point.getX()][point.getY()+1] != null)
+				num--;
+			if (stones[point.getX()+1][point.getY()] != null)
+				num--;
+			if (stones[point.getX()-1][point.getY()] != null)
+				num--;
+			return num;
+		}
+		}
+		catch(Exception e) {
+			GoException E = new GoException("检查气的数目时发生了错误，点：" + point.toString() + " 原始原因：" + e.getMessage());
+			E.initCause(e);
+			throw E;
+		}
+	}
+	
+	/**
+	 * 向棋盘中添加一个新的棋子
+	 * @param color 添加的棋子颜色
+	 * @param point 添加的棋子的点
+	 * @param panel 容纳棋子的棋盘面板
+	 * @return <p><code>true</code> 成功添加一个棋子</p><code>false 
+	 * 								   </code> 走棋失败，因为走棋非法或者是该位置已经有棋子了
+	 * 							
+	 * @throws GoException 添加棋子时的抛出异常
+	 * @throws FileNotFoundException 重置输出文件器时抛出的异常
+	 */
+	public boolean addStone(Point point, boolean color, GoPanel panel) throws GoException, FileNotFoundException {
+		
+		if (stones[point.getX()][point.getY()] != null) {
+			JOptionPane.showMessageDialog(panel, "当前位置已有棋子！");
+			//showDebugMessage();
+			return false;
+		}																			//如果向一个已有棋子的位置添加，则不会有任何的反应
+		else {																								
+			if (testIfLegal(point, color)) {																												//如果合法
+				stones[point.getX()][point.getY()] = new Stone(color, point, checkQiNum(point));
+				CurrentX = point.getX();
+				CurrentY = point.getY();
+				resetNeighbors(point, color);
+				refreshBoard(color);
+				outputStonesToFile();
+				//showDebugMessage();
+				return true;
+			}
+			else {
+				JOptionPane.showMessageDialog(panel, "位置非法！");
+				//showDebugMessage();
+				return false;
+			}
+		}
+	}
+	
+	/**
+	 * 用于进行所有群组的debug方法
+	 */
+	@SuppressWarnings("unused")
+	private void showDebugMessage() {
+		System.out.println("黑棋群组：\n" + this.BlackGroup.stream().map(StoneGroup::toString).collect(Collectors.joining("，", "{", "}")));
+		System.out.println("白棋群组：\n" + this.WhiteGroup.stream().map(StoneGroup::toString).collect(Collectors.joining("，", "{", "}")) + "\n");
+	}
+
+	/**
+	 * 刷新棋盘状态，将旧群组删除，将所有无气的棋子提出
+	 * @throws GoException 有群组的气小于0的异常
+	 */
+	private void refreshBoard(boolean CurColor) throws GoException {
+		//先对敌方群组进行操作
+		refreshAllQi(!CurColor);
+		Iterator<StoneGroup> iter = (CurColor ? this.WhiteGroup : this.BlackGroup).iterator();
+		while (iter.hasNext()) {
+			StoneGroup g = iter.next();
+			//9.1修改
+			//由于被替代群组的标记和回收都是在方法combineNewGroups里面进行的，所以与外界无关
+			//如果发现群组是被替代的旧群组
+			/*
+			if (g.getIfReplaced())
+				iter.remove();
+			*/
+			//如果发现有群组的气小于0
+			if (g.getQi() < 0) {
+				throw new GoException("刷新棋盘状态时出现了异常，有群组的气小于0");
+			}
+			//如果发现有群组的气为0，则将棋盘上所有群组内的棋子都移除，再移除群组
+			else if (g.getQi() == 0) {
+				Iterator<Stone> iter2 = g.getStonesIter();
+				while (iter2.hasNext()) {
+					Stone s = iter2.next();
+					stones[s.getPoint().getX()][s.getPoint().getY()] = null;
+				}
+				iter.remove();
+			}
+		}
+		
+		//再对敌方颜色单棋子气的判断
+		for (int i = 0; i <= 8; i++) {
+			for (int j = 0; j <= 8; j++) {
+				if (stones[i][j] != null) {
+					if (stones[i][j].getGroup() == null) {
+						if (stones[i][j].getQi() == 0 && stones[i][j].getColor() != CurColor){
+							stones[i][j] = null;
+						}
+					}
+				}
+			}
+		}
+		
+		//再刷新完对方颜色以后再刷新己方的颜色
+		refreshAllQi(CurColor);
+		
+		iter = (!CurColor ? this.WhiteGroup : this.BlackGroup).iterator();
+		while (iter.hasNext()) {
+			StoneGroup g = iter.next();
+			//如果发现群组是被替代的旧群组
+			/*
+			if (g.getIfReplaced())
+				iter.remove();
+			*/
+			//如果发现有群组的气小于0
+			if (g.getQi() < 0) {
+				throw new GoException("刷新棋盘状态时出现了异常，有群组的气小于0");
+			}
+			//如果发现有群组的气为0，则将棋盘上所有群组内的棋子都移除，再移除群组
+			else if (g.getQi() == 0) {
+				Iterator<Stone> iter2 = g.getStonesIter();
+				while (iter2.hasNext()) {
+					Stone s = iter2.next();
+					stones[s.getPoint().getX()][s.getPoint().getY()] = null;
+				}
+				iter.remove();
+			}
+		}
+		//再对单棋子进行操作
+		for (int i = 0; i <= 8; i++) {
+			for (int j = 0; j <= 8; j++) {
+				if (stones[i][j] != null) {
+					if (stones[i][j].getGroup() == null) {
+						//9.1修改
+						if (stones[i][j].getQi() == 0 && stones[i][j].getColor() == CurColor){
+							stones[i][j] = null;
+						}
+					}
+				}
+			}
+		}
+		
+		//在刷掉所有死亡棋子以后再刷新所有棋子的气
+		//refreshAllQi(!CurColor);
+		//refreshAllQi(CurColor);
+	}
+	
+	/**
+	 * 刷新一个玩家的对方玩家的所欲棋子的气的状态，用于在行棋以后判断是否有因提子而发生气的变化(RunTime Check)
+	 * @param CurColor 当前玩家的颜色
+	 * @throws GoException 刷新当前颜色所有棋子的气时抛出的异常
+	 */
+	private void refreshAllQi(boolean CurColor) throws GoException {
+		//重置当前颜色下所有群组的气
+		Iterator<StoneGroup> iter = (CurColor ? this.BlackGroup : this.WhiteGroup).iterator();
+		while(iter.hasNext()) {
+			StoneGroup g = iter.next();
+			Iterator<Stone> iter2 = g.getStonesIter();
+			int Qi = 0;
+			while (iter2.hasNext()) {
+				Qi += checkQiNum(iter2.next().getPoint());
+			}
+			g.setQi(Qi);
+		}
+		//重置当前颜色下所有单棋子
+		for (int i = 0; i <= 8; i++) {
+			for (int j = 0; j <= 8; j++) {
+				if (stones[i][j] != null && stones[i][j].getGroup() == null && stones[i][j].getColor() == CurColor)
+					stones[i][j].setQi(checkQiNum(stones[i][j].getPoint()));
+			}
+		}
+	}
+
+	/**
+	 * 测试这一次添子是否合法，分为添子不成组且无气非法，添子无气吃子合法和添子有气合法
+	 * @param point 添子点位置
+	 * @param color 添子颜色
+	 * @return 是否合法
+	 * @throws GoException 添子异常
+	 */
+	private boolean testIfLegal(Point point, boolean color) throws GoException {
+		//测试性添子
+		stones[point.getX()][point.getY()] = new Stone(color, point);
+		try {
+		switch(checkPosition(point)) {
+			case 1:
+				if (stones[0][1] == null || stones[1][0] == null)
+					return true;
+				if (stones[0][1].getColor() != color && stones[1][0].getColor() != color) {												//左上角两个邻位都是敌方棋子，即走棋在敌方的眼中
+					if (testIfDead(0, 1, color)){																															//走棋以后吃子
+						stones[point.getX()][point.getY()] = null;
+						return true;
+					}					
+					if (testIfDead(1, 0, color)) {																														//走棋以后吃子
+						stones[point.getX()][point.getY()] = null;
+						return true;
+					}
+					stones[point.getX()][point.getY()] = null;
+					return false;																																													//走棋以后没有吃子，走棋非法
+				}
+				stones[point.getX()][point.getY()] = null;
+				return true;
+				//...允许自杀，待完善
+				
+			case 2:
+				if (stones[point.getX()-1][0] == null || stones[point.getX()+1][0] == null || stones[point.getX()][1] == null)
+					return true;
+				if (stones[point.getX()-1][0].getColor() != color 
+						&& stones[point.getX()+1][0].getColor() != color 
+						&& stones[point.getX()][1].getColor() != color) {												//左、下、右邻位都是敌方棋子，即走棋在敌方的眼中
+					if (testIfDead(point.getX()-1, 0, color)){																															//走棋以后吃子
+						stones[point.getX()][point.getY()] = null;
+						return true;
+					}					
+					if (testIfDead(point.getX()+1, 0, color)) {																														//走棋以后吃子
+						stones[point.getX()][point.getY()] = null;
+						return true;
+					}
+					if (testIfDead(point.getX(), 1, color)) {																																//走棋以后吃子
+						stones[point.getX()][point.getY()] = null;
+						return true;
+					}
+					stones[point.getX()][point.getY()] = null;
+					return false;																																													//走棋以后没有吃子，走棋非法
+				}
+				stones[point.getX()][point.getY()] = null;
+				return true;
+				
+			case 3:
+				if (stones[7][0] == null || stones[8][1] == null)
+					return true;
+				if (stones[7][0].getColor() != color && stones[8][1].getColor() != color) {												//左上角两个邻位都是敌方棋子，即走棋在敌方的眼中
+					if (testIfDead(7, 0, color)){																															//走棋以后吃子
+						stones[point.getX()][point.getY()] = null;
+						return true;
+					}					
+					if (testIfDead(8, 1, color)) {																														//走棋以后吃子
+						stones[point.getX()][point.getY()] = null;
+						return true;
+					}
+					stones[point.getX()][point.getY()] = null;
+					return false;																																													//走棋以后没有吃子，走棋非法
+				}
+				stones[point.getX()][point.getY()] = null;
+				return true;
+				
+			case 4:
+				if (stones[8][point.getY()-1] == null || stones[8][point.getY()+1] == null || stones[7][point.getY()] == null)
+					return true;
+				if (stones[8][point.getY()-1].getColor() != color 
+						&& stones[8][point.getY()+1].getColor() != color 
+						&& stones[7][point.getY()].getColor() != color) {												//左、下、上邻位都是敌方棋子，即走棋在敌方的眼中
+					if (testIfDead(8, point.getY()-1, color)){																															//走棋以后吃子
+						stones[point.getX()][point.getY()] = null;
+						return true;
+					}					
+					if (testIfDead(8, point.getY()+1, color)) {																														//走棋以后吃子
+						stones[point.getX()][point.getY()] = null;
+						return true;
+					}
+					if (testIfDead(7, point.getY(), color)) {																																//走棋以后吃子
+						stones[point.getX()][point.getY()] = null;
+						return true;
+					}
+					stones[point.getX()][point.getY()] = null;
+					return false;																																													//走棋以后没有吃子，走棋非法
+				}
+				stones[point.getX()][point.getY()] = null;
+				return true;
+				
+			case 5:
+				if (stones[8][7] == null || stones[7][8] == null)
+					return true;
+				if (stones[7][8].getColor() != color && stones[8][7].getColor() != color) {												//左上角两个邻位都是敌方棋子，即走棋在敌方的眼中
+					if (testIfDead(7, 8, color)){																															//走棋以后吃子
+						stones[point.getX()][point.getY()] = null;
+						return true;
+					}					
+					if (testIfDead(8, 7, color)) {																														//走棋以后吃子
+						stones[point.getX()][point.getY()] = null;
+						return true;
+					}
+					stones[point.getX()][point.getY()] = null;
+					return false;																																													//走棋以后没有吃子，走棋非法
+				}
+				stones[point.getX()][point.getY()] = null;
+				return true;
+				
+			case 6:
+				if (stones[point.getX()-1][8] == null || stones[point.getX()+1][8] == null || stones[point.getX()][7] == null)
+					return true;
+				if (stones[point.getX()-1][8].getColor() != color 
+						&& stones[point.getX()+1][8].getColor() != color 
+						&& stones[point.getX()][7].getColor() != color) {												//左、右、上邻位都是敌方棋子，即走棋在敌方的眼中
+					if (testIfDead(point.getX()-1,8, color)){																															//走棋以后吃子
+						stones[point.getX()][point.getY()] = null;
+						return true;
+					}					
+					if (testIfDead(point.getX()+1, 8, color)) {																														//走棋以后吃子
+						stones[point.getX()][point.getY()] = null;
+						return true;
+					}
+					if (testIfDead(point.getX(), 7, color)) {																																//走棋以后吃子
+						stones[point.getX()][point.getY()] = null;
+						return true;
+					}
+					stones[point.getX()][point.getY()] = null;
+					return false;																																													//走棋以后没有吃子，走棋非法
+				}
+				stones[point.getX()][point.getY()] = null;
+				return true;
+				
+			case 7:
+				if (stones[0][7] == null || stones[1][8] == null)
+					return true;
+				if (stones[1][8].getColor() != color && stones[0][7].getColor() != color) {												//左上角两个邻位都是敌方棋子，即走棋在敌方的眼中
+					if (testIfDead(1, 8, color)){																															//走棋以后吃子
+						stones[point.getX()][point.getY()] = null;
+						return true;
+					}					
+					if (testIfDead(0, 7, color)) {																														//走棋以后吃子
+						stones[point.getX()][point.getY()] = null;
+						return true;
+					}
+					stones[point.getX()][point.getY()] = null;
+					return false;																																													//走棋以后没有吃子，走棋非法
+				}
+				stones[point.getX()][point.getY()] = null;
+				return true;
+				
+			case 8:
+				if (stones[0][point.getY()-1] == null || stones[0][point.getY()+1] == null || stones[1][point.getY()] == null)
+					return true;
+				if (stones[0][point.getY()-1].getColor() != color 
+						&& stones[0][point.getY()+1].getColor() != color 
+						&& stones[1][point.getY()].getColor() != color) {												//左、右、上邻位都是敌方棋子，即走棋在敌方的眼中
+					if (testIfDead(0,point.getY()-1, color)){																															//走棋以后吃子
+						stones[point.getX()][point.getY()] = null;
+						return true;
+					}					
+					if (testIfDead(0, point.getY()+1, color)) {																														//走棋以后吃子
+						stones[point.getX()][point.getY()] = null;
+						return true;
+					}
+					if (testIfDead(1, point.getY(), color)) {																																//走棋以后吃子
+						stones[point.getX()][point.getY()] = null;
+						return true;
+					}
+					stones[point.getX()][point.getY()] = null;
+					return false;																																													//走棋以后没有吃子，走棋非法
+				}
+				stones[point.getX()][point.getY()] = null;
+				return true;
+				
+			default:
+				if (stones[point.getX()-1][point.getY()] == null 
+				|| stones[point.getX()+1][point.getY()] == null 
+				|| stones[point.getX()][point.getY()-1] == null 
+				||stones[point.getX()][point.getY()+1] == null)
+					return true;
+				if (stones[point.getX()-1][point.getY()].getColor() != color
+				&& stones[point.getX()+1][point.getY()].getColor() != color
+				&& stones[point.getX()][point.getY()-1].getColor() != color 
+				&&stones[point.getX()][point.getY()+1].getColor() != color) {
+					if (testIfDead(point.getX()-1, point.getY(), color)) {
+						stones[point.getX()][point.getY()] = null;
+						return true;
+					}
+					if (testIfDead(point.getX()+1, point.getY(), color)) {
+						stones[point.getX()][point.getY()] = null;
+						return true;
+					}
+					if (testIfDead(point.getX(), point.getY()-1, color)) {
+						stones[point.getX()][point.getY()] = null;
+						return true;
+					}
+					if (testIfDead(point.getX(), point.getY()+1, color)) {
+						stones[point.getX()][point.getY()] = null;
+						return true;
+					}
+					stones[point.getX()][point.getY()] = null;
+					return false;
+				}
+				stones[point.getX()][point.getY()] = null;
+				return true;
+		}//结束switch
+		}//结束try
+		catch(Exception e) {
+			GoException E = new GoException("检查走棋合法性时发生了错误，点：" + point.toString() + "\n初始原因：" + e.getMessage());
+			E.initCause(e);
+			throw E;
+		}
+	}
+	
+	/**
+	 * 用于辅助测试函数，用于测试一个方向的单位，要么是单棋子，要么是群组是否在测试性添子以后死亡
+	 * @param x 测试方向的X坐标
+	 * @param y 测试方向的Y坐标
+	 * @param 已经测试过的群组
+	 * @return 是否死亡
+	 * @throws GoException 
+	 */
+	private boolean testIfDead(int x, int y, boolean color) throws GoException {
+		if (stones[x][y].getGroup() == null) {
+			if (checkQiNum(stones[x][y].getPoint()) == 0) {
+				return true;
+			}
+		}
+		//9.1修改
+		//检查某点处是否有吃群组的子的情况，只需检查改群组即可，无需遍历所有群组
+		else {
+			/*
+			for (StoneGroup g : (color ? this.WhiteGroup : this.BlackGroup)) {
+				Iterator<Stone> iter = g.getStonesIter();
+				int Qi = 0;
+				while (iter.hasNext()) {
+					Qi += checkQiNum(iter.next().getPoint());
+				}
+				if (Qi == 0)
+					return true;
+			}
+			*/
+			StoneGroup g = stones[x][y].getGroup();
+			Iterator<Stone> iter = g.getStonesIter();
+			while (iter.hasNext()) {
+				//只要有一个群组棋子有气，就代表群组没被吃掉
+				if (checkQiNum(iter.next().getPoint()) != 0)
+					return false;
+			}
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * 检查同时重置邻近的棋子的状态，如果是敌方棋子或者群组则紧气，如果是己方单棋子或者群组则进行组合
+	 * @param point 待检查的位置
+	 * @param color 棋子颜色
+	 * @throws GoException 添加群组时颜色不一致的异常
+	 */
+	private void resetNeighbors(Point point,boolean color) throws GoException {
+		//Stone[] tempStones = new Stone[4];
+		//StoneGroup[] tempGroups = new StoneGroup[4];
+		LinkedList<StoneGroup> tempG = new LinkedList<>();
+		LinkedList<Stone> tempS = new LinkedList<>();
+		//int is = 0, ig = 0;
+		//如果左侧没有出界
+		if (point.getX() > 0) {
+			//如果左侧有棋子
+			if (stones[point.getX()-1][point.getY()] != null) {
+				//如果左侧有群组
+				if (stones[point.getX()-1][point.getY()].getGroup() != null) {
+					//如果左侧群组颜色一致
+					//9.1修改：
+					//1.为了避免添加重复的群组，改为使用链表代替数组
+					//2.由于使用了checkQiNum的检查，因此弃用了所有群组和棋子的气实例域，因此不再紧气，只是添加群组
+					if (stones[point.getX()-1][point.getY()].getGroup().getColor() == color) {
+					/*
+						boolean alreadyContains = false;																																	//判断这个群组是否已经添加过了					
+						for (StoneGroup g : tempGroups) {
+							if (stones[point.getX()-1][point.getY()].getGroup() == g) {
+								alreadyContains = true;
+								break;
+							}
+						}
+						if(!alreadyContains) {
+							tempGroups[ig++] = stones[point.getX()-1][point.getY()].getGroup();
+						}
+						//System.out.println("左侧群组添加");
+					*/
+						//如果没有重复包含同一群组，就添加之
+						if (!tempG.contains(stones[point.getX()-1][point.getY()].getGroup()))
+							tempG.add(stones[point.getX()-1][point.getY()].getGroup());
+					}
+					//不一致时紧气
+					/*
+					else {
+						stones[point.getX()-1][point.getY()].getGroup().setQi(stones[point.getX()-1][point.getY()].getGroup().getQi()-1);
+						//System.out.println("左侧群组紧气");
+					}
+					*/
+				}
+				//左侧无群组
+				else {
+					//单棋子颜色一致
+					if (stones[point.getX()-1][point.getY()].getColor() == color) {
+						//System.out.println("左侧单棋子添加");
+						tempS.add(stones[point.getX()-1][point.getY()]);
+					}
+					//单棋子颜色不一致
+					/*
+					else {
+						stones[point.getX()-1][point.getY()].setQi(stones[point.getX()-1][point.getY()].getQi()-1);
+						//System.out.println("左侧单棋子紧气");
+					}
+					*/
+				}
+			}
+		}
+		
+		//上侧
+		if (point.getY() > 0) {
+			if (stones[point.getX()][point.getY()-1] != null) {
+				if (stones[point.getX()][point.getY()-1].getGroup() != null) {
+					if (stones[point.getX()][point.getY()-1].getGroup().getColor() == color) {
+						/*
+						//判断这个群组是否已经添加过了	
+						boolean alreadyContains = false;																																					
+						for (StoneGroup g : tempGroups) {
+							if (stones[point.getX()][point.getY()-1].getGroup() == g) {
+								alreadyContains = true;
+								break;
+							}
+						}
+						if(!alreadyContains) {
+							tempGroups[ig++] = stones[point.getX()][point.getY()-1].getGroup();
+						}
+						*/
+					if (!tempG.contains(stones[point.getX()][point.getY()-1].getGroup()))
+						tempG.add(stones[point.getX()][point.getY()-1].getGroup());
+					}
+					/*
+					else {
+						stones[point.getX()][point.getY()-1].getGroup().setQi(stones[point.getX()][point.getY()-1].getGroup().getQi()-1);
+					}
+					*/
+				}
+				else {
+					if (stones[point.getX()][point.getY()-1].getColor() == color)
+						tempS.add(stones[point.getX()][point.getY()-1]);
+					/*
+					else {
+						stones[point.getX()][point.getY()-1].setQi(stones[point.getX()][point.getY()-1].getQi()-1);
+					}
+					*/
+				}
+			}
+		}
+		
+		//右侧
+		if (point.getX() < 8) {
+			if (stones[point.getX()+1][point.getY()] != null) {
+				if (stones[point.getX()+1][point.getY()].getGroup() != null) {
+					if (stones[point.getX()+1][point.getY()].getGroup().getColor() == color) {
+						/*
+						boolean alreadyContains = false;																																	//判断这个群组是否已经添加过了					
+						for (StoneGroup g : tempGroups) {
+							if (stones[point.getX()+1][point.getY()].getGroup() == g) {
+								alreadyContains = true;
+								break;
+							}
+						}
+						if(!alreadyContains) {
+							tempGroups[ig++] = stones[point.getX()+1][point.getY()].getGroup();
+						}
+						*/
+						if (!tempG.contains(stones[point.getX()+1][point.getY()].getGroup()))
+							tempG.add(stones[point.getX()+1][point.getY()].getGroup());
+					}
+					/*
+					else {
+						stones[point.getX()+1][point.getY()].getGroup().setQi(stones[point.getX()+1][point.getY()].getGroup().getQi()-1);
+					}
+					*/
+				}
+				else {
+					if (stones[point.getX()+1][point.getY()].getColor() == color)
+						tempS.add(stones[point.getX()+1][point.getY()]);
+					/*
+					else {
+						stones[point.getX()+1][point.getY()].setQi(stones[point.getX()+1][point.getY()].getQi()-1);
+					}
+					*/
+				}
+			}
+		}
+		
+		//下侧
+		if (point.getY() < 8) {
+			if (stones[point.getX()][point.getY()+1] != null) {
+				if (stones[point.getX()][point.getY()+1].getGroup() != null) {
+					if (stones[point.getX()][point.getY()+1].getGroup().getColor() == color) {
+						/*
+						boolean alreadyContains = false;																																	//判断这个群组是否已经添加过了					
+						for (StoneGroup g : tempGroups) {
+							if (stones[point.getX()][point.getY()+1].getGroup() == g) {
+								alreadyContains = true;
+								break;
+							}
+						}
+						if(!alreadyContains) {
+							tempGroups[ig++] = stones[point.getX()][point.getY()+1].getGroup();
+						}
+						*/
+						if (!tempG.contains(stones[point.getX()][point.getY()+1].getGroup()))
+							tempG.add(stones[point.getX()][point.getY()+1].getGroup());
+					}//结束颜色相同
+					/*
+					else {
+						stones[point.getX()][point.getY()+1].getGroup().setQi(stones[point.getX()][point.getY()+1].getGroup().getQi()-1);
+					}
+					*/
+				}//结束群组非空
+				else {
+					if (stones[point.getX()][point.getY()+1].getColor() == color)
+						tempS.add(stones[point.getX()][point.getY()+1]);
+					/*
+					else {
+						stones[point.getX()][point.getY()+1].setQi(stones[point.getX()][point.getY()+1].getQi()-1);
+					}
+					*/
+				}//结束群组为空
+			} //结束位置非空
+		}
+		
+		//将所有颜色一致的群组或者单棋子进行组合
+		/*System.out.println("当前待合并的棋子: " + stones[point.getX()][point.getY()].toString());
+		System.out.println("被合并的棋子：" + Arrays.toString(tempStones));
+		System.out.println("被合并的群组：" + Arrays.toString(tempGroups) + "\n");*/
+		
+		//list转array
+		Stone[] ArrayS = new Stone[tempS.size()];
+		StoneGroup[] ArrayG = new StoneGroup[tempG.size()];
+		tempG.toArray(ArrayG);
+		tempS.toArray(ArrayS);
+		combineNewGroup(stones[point.getX()][point.getY()], ArrayS, ArrayG, color);
+	}
+	
+	/**
+	 * 用于将单棋子或者群组组合成为新群组
+	 * @param stones 待组合的旧单棋子数组
+	 * @param groups 待组合的旧群组数组
+	 * @param color 待组合的颜色
+	 * @throws GoException 群组组合时的异常
+	 */
+	private void combineNewGroup(Stone Curstone, Stone[] stones, StoneGroup[] groups, boolean color) throws GoException {
+		//9.1修改
+		//如果新添加的棋子周围没有己方棋子或者群组（stones和groups均无元素），则直接跳出
+		if (stones.length == 0 && groups.length == 0)
+			return;
+		//新群组
+		StoneGroup newG = new StoneGroup(color);
+		newG.addStone(Curstone);
+		newG.setQi(Curstone.getQi());
+		Curstone.setGroup(newG);
+		//如果所有除当前棋子以外没有待添加的单棋子或者群组，则不会讲当前棋子设置为新群组
+		/*
+		if(stones[0] != null || groups[0] != null) {
+			newG.addStone(Curstone);
+			newG.setQi(Curstone.getQi());
+			Curstone.setGroup(newG);
+		}
+		*/
+		//9.1修改
+		//1.由于群组和单棋子气的弃用，因此在添加群组时不再考虑其气的问题
+		//由于在方法开头已经对周围没有群组的情况进行了检查，因此不再需要检查是否没有群组和单棋子的添加
+		//boolean ifCombine = false;
+		//int Qi = 0;
+		//将单棋子添加到新群组中
+		try {
+			//if(stones[0] != null) System.out.println("以下棋子被分为一个群组：" + "\n" + Curstone.toString());
+				for (Stone s : stones) {	
+					if (s != null) {
+						//ifCombine = true;
+						//Qi += s.getQi() - 1;
+						System.out.print(s.getPoint() + "被添加到群组中");
+						s.setGroup(newG);
+						newG.addStone(s);
+						//System.out.println(s.toString());
+					}
+					//System.out.println();
+				}
+		//将旧群组添加到新群组中
+			if (groups.length > 0) {
+				for (StoneGroup g : groups) {														
+					if (g != null) {
+						//ifCombine = true;
+						//Qi += g.getQi() - 1;
+						newG.addStone(g);
+						Iterator<Stone> iter = g.getStonesIter();	
+						//迭代将旧群组中的棋子的群组都设置为新群组
+						while (iter.hasNext()) {															
+							iter.next().setGroup(newG);
+						}
+						//回收旧群组
+						g.replaced();
+						//System.out.println(g.toString());
+					}
+				}
+			}
+		//遍历群组集合，将标记的旧群组回收
+		Iterator<StoneGroup> iter2 = (color ? this.BlackGroup : this.WhiteGroup).iterator();
+		while (iter2.hasNext()) {
+			if (iter2.next().getIfReplaced())
+				iter2.remove();
+		}
+		//添加新群组
+		/*if (ifCombine) {
+			newG.setQi(newG.getQi() + Qi);
+			(color ? this.BlackGroup : this.WhiteGroup).add(newG);
+		}*/
+		(color ? this.BlackGroup : this.WhiteGroup).add(newG);
+		System.out.println(newG.toString());
+		/*System.out.println((color ? "黑棋所有群组: " : "白棋所有群组: ") +
+				(color ? this.BlackGroup : this.WhiteGroup).stream().map(StoneGroup::toString).collect(Collectors.joining("，", "{", "}")));*/
+	}
+		catch(Exception e) {
+			GoException E = new GoException("添加群组时出现了异常， 原始原因：" + e.getMessage());
+			E.initCause(e);
+			throw E;
+		}
+	}
+	
+	/**
+	 * 用于将棋盘上当前的所有棋子与棋盘打印到文件中
+	 * @throws FileNotFoundException 指定文件没有找到的异常
+	 */
+	private void outputStonesToFile() throws FileNotFoundException {
+		this.writer = new PrintWriter(new FileOutputStream("Board.txt"), true);
+		writer.println("棋盘状态\n");
+		for (int i = 0; i <= 8; i++) {
+			for (int j = 0; j <= 8; j++) {
+				if (stones[j][i] == null)
+					writer.print(" ");
+				else if (stones[j][i].getColor())
+					writer.print("X");
+				else if (!stones[j][i].getColor())
+					writer.print("O");
+				if (j != 8)
+					writer.print("——");
+				else writer.println();
+			}
+			if (i != 8)
+				writer.println("|  |  |  |  |  |  |  |  |");
+		}
+	}
+	
+	/**
+	 * 用于得到当前的行棋点的外部调用方法
+	 * @return 当前行棋点
+	 * @throws GoException 点溢出的异常
+	 */
+	public Point getCurrentPoint() throws GoException {
+		return new Point(CurrentX, CurrentY);
+	}
+	
+}
+
+
+
+
+
+
+
+
+
+

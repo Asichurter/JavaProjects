@@ -1,0 +1,198 @@
+
+
+第1轮测试结束，耗费时间：142391ms
+蒙特卡洛树搜索得分： 44
+普通博弈树得分：37
+蒙特卡罗树搜索获胜！
+最终棋盘：
+_ X O _ O O O O O 
+X _ X O X X X O O 
+X X X O X _ X X O 
+X X X O O X X O O 
+X O X X X X O O O 
+X O O O X _ X O O 
+X X X O X X X X O 
+_ X O O O X O X O 
+X X X X O O _ O _ 
+
+
+
+
+
+第2轮测试结束，耗费时间：155534ms
+蒙特卡洛树搜索得分： 56
+普通博弈树得分：25
+蒙特卡罗树搜索获胜！
+最终棋盘：
+O X X X X _ X X _ 
+O O X _ X X X X X 
+O O X X X X _ X X 
+O _ O X X _ X _ X 
+O O O O X X X X X 
+X X O O O X X X X 
+_ X O O X _ X O X 
+X X X X X X O O O 
+_ X X X X X O O _ 
+
+
+
+
+
+第3轮测试结束，耗费时间：148659ms
+蒙特卡洛树搜索得分： 28
+普通博弈树得分：53
+普通博弈树搜索获胜！
+最终棋盘：
+X X _ X X O O O O 
+_ X X X O O O _ O 
+X _ X X O _ O O _ 
+_ X X O O O _ O O 
+X X O O O O O _ O 
+O X X X X O O O O 
+O O O O X X X X X 
+O O O O O X O O O 
+_ O O _ O O _ O _ 
+
+
+
+
+
+第4轮测试结束，耗费时间：142579ms
+蒙特卡洛树搜索得分： 54
+普通博弈树得分：27
+蒙特卡罗树搜索获胜！
+最终棋盘：
+_ X _ X X X X X X 
+X X X X X X X X O 
+X O O O X X X O O 
+O O _ O O X O O _ 
+O _ O _ O O O O O 
+O O X O O X X X X 
+X X X X X X X _ X 
+X X X X X X X X X 
+_ X X _ X X _ X _ 
+
+
+
+
+
+第5轮测试结束，耗费时间：137223ms
+蒙特卡洛树搜索得分： 35
+普通博弈树得分：46
+普通博弈树搜索获胜！
+最终棋盘：
+O _ O O _ O O O X 
+_ O O _ O O X X X 
+O O _ O O _ O X _ 
+O O O O O O O X X 
+O O _ O O O O X _ 
+_ O O O X X X X X 
+O _ O X X X X _ X 
+O O X X X X X X _ 
+O O X X _ X _ X X 
+
+
+
+
+
+第6轮测试结束，耗费时间：158153ms
+蒙特卡洛树搜索得分： 0
+普通博弈树得分：81
+普通博弈树搜索获胜！
+最终棋盘：
+O O O _ O O O O O 
+O _ O O O _ O O O 
+O O _ O _ O O O _ 
+O O O O O O _ O O 
+O _ O O O _ O _ O 
+_ O O _ O O _ O O 
+O O O O _ O O O O 
+O _ O O O O O _ O 
+_ O _ O _ O O O _ 
+
+
+
+
+
+第7轮测试结束，耗费时间：143497ms
+蒙特卡洛树搜索得分： 29
+普通博弈树得分：52
+普通博弈树搜索获胜！
+最终棋盘：
+O O X X _ X _ X _ 
+_ O X X X X X X X 
+O O O X X O X X X 
+O O O O O O X X X 
+O O O O O X X X _ 
+O _ O _ O O X X X 
+O O O O O _ O O O 
+_ O O O O O _ O _ 
+O _ O _ O O O _ O 
+
+
+
+
+
+第8轮测试结束，耗费时间：136419ms
+蒙特卡洛树搜索得分： 46
+普通博弈树得分：35
+蒙特卡罗树搜索获胜！
+最终棋盘：
+_ O O _ O O O X X 
+O O O O O X X X X 
+O X X O X _ X X X 
+O X X X X X X X X 
+O O O O O X X X X 
+O X X X X X X X _ 
+O O X O O X X X X 
+O _ O _ O X _ X X 
+_ O O O O X X X _ 
+
+
+
+
+
+第9轮测试结束，耗费时间：164351ms
+蒙特卡洛树搜索得分： 51
+普通博弈树得分：30
+蒙特卡罗树搜索获胜！
+最终棋盘：
+_ X X X X X X X _ 
+X X _ X X X X X X 
+X X X X X X _ X X 
+X O X O O X X X _ 
+O O X O O O O X X 
+O X X O O X X X X 
+O O O O X X X X X 
+_ O _ O O O O X _ 
+O O O _ O O O X X 
+
+
+
+
+
+第10轮测试结束，耗费时间：134745ms
+蒙特卡洛树搜索得分： 26
+普通博弈树得分：55
+普通博弈树搜索获胜！
+最终棋盘：
+O O O O _ O _ O _ 
+O O _ O O O O O O 
+O O O _ O O X X O 
+_ O _ O X X X O O 
+O O O O O X X X O 
+O _ O O X X X _ X 
+O O O O O O X X X 
+_ O O O X X X X X 
+O O _ O X X _ X X 
+
+
+
+技术统计：
+蒙特卡洛树获胜次数：5
+普通博弈树获胜次数:5
+蒙特卡洛树总得分：369
+普通博弈树总得分：441
+蒙特卡洛树平均得分：36.9
+普通博弈树平均得分：44.1
+蒙特卡洛树胜率：0.5
